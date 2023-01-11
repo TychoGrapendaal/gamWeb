@@ -13,42 +13,48 @@ let pick = 0;
 let turn = 'player';
 let again = true;
 
+const suits = ["clubs", "hearts", "diamonds", "spades"];
+
 function preload() {
   img = loadImage('PNG-cards-1.3/clubs.png');
 }
+
 function setup() {
   createCanvas(3000, 1500);
-  for (let i = 2; i < 11; i++) {
-    deck.push(new Card('PNG-cards-1.3/' + i.toString() + '_of_clubs.png', i, 'clubs'))
-  }
-  deck.push(new Card('PNG-cards-1.3/jack_of_clubs2.png', 11, 'clubs'));
-  deck.push(new Card('PNG-cards-1.3/queen_of_clubs2.png', 12, 'clubs'));
-  deck.push(new Card('PNG-cards-1.3/king_of_clubs2.png', 13, 'clubs'));
-  deck.push(new Card('PNG-cards-1.3/ace_of_clubs.png', 14, 'clubs'));
-  for (let i = 2; i < 11; i++) {
-    deck.push(new Card('PNG-cards-1.3/' + i.toString() + '_of_hearts.png', i, 'hearts'))
-  }
-  deck.push(new Card('PNG-cards-1.3/jack_of_hearts2.png', 11, 'hearts'));
-  deck.push(new Card('PNG-cards-1.3/queen_of_hearts2.png', 12, 'hearts'));
-  deck.push(new Card('PNG-cards-1.3/king_of_hearts2.png', 13, 'hearts'));
-  deck.push(new Card('PNG-cards-1.3/ace_of_hearts.png', 14, 'hearts'));
-  for (let i = 2; i < 11; i++) {
-    deck.push(new Card('PNG-cards-1.3/' + i.toString() + '_of_diamonds.png', i, 'diamonds'))
-  }
-  deck.push(new Card('PNG-cards-1.3/jack_of_diamonds2.png', 11, 'diamonds'));
-  deck.push(new Card('PNG-cards-1.3/queen_of_diamonds2.png', 12, 'diamonds'));
-  deck.push(new Card('PNG-cards-1.3/king_of_diamonds2.png', 13, 'diamonds'));
-  deck.push(new Card('PNG-cards-1.3/ace_of_diamonds.png', 14, 'diamonds'));
-  for (let i = 2; i < 11; i++) {
-    deck.push(new Card('PNG-cards-1.3/' + i.toString() + '_of_spades.png', i, 'spades'))
-  }
-  deck.push(new Card('PNG-cards-1.3/jack_of_spades2.png', 11, 'spades'));
-  deck.push(new Card('PNG-cards-1.3/queen_of_spades2.png', 12, 'spades'));
-  deck.push(new Card('PNG-cards-1.3/king_of_spades2.png', 13, 'spades'));
-  deck.push(new Card('PNG-cards-1.3/ace_of_spades2.png', 14, 'spades'));
+  createDeck();
+  shuffleDeck();
+  dealCards();
+}
 
-  swap(deck);
+function createDeck() {
+    suits.forEach(suit => {
+      for (let i = 2; i <= 14; i++) {
+        let value = i;
+        if (i === 11) value = "jack";
+        if (i === 12) value = "queen";
+        if (i === 13) value = "king";
+        if (i === 14) value = "ace";
+        deck.push(new Card(`PNG-cards-1.3/${value}_of_${suit}.png`, i, suit));
+      }
+    });
+}
 
+function shuffleDeck(){
+    // shuffle the deck using the fisher-yates shuffle algorithm
+    let swap1;
+    let swap2;
+    let x;
+    let y;
+    for (let i = 0; i < deck.length; i++) {
+        swap1 = grid[i];
+        index = round(random(deck.length - 1));
+        swap2 = grid[index];
+        grid[i] = swap2;
+        grid[index] = swap1;
+    }
+}
+
+function dealCards(){
   for (let i = deck.length - 1; i >= 0; i--) {
     if (i % 2 === 0) {
       playerDeck.push(deck.splice(i, 1)[0]);
@@ -82,20 +88,11 @@ function setup() {
     card.y = 100;
     num++;
   }
-  // for (let i = 0; i < 4; i++) {
-  //   for (let j = 0; j < 13; j++) {
-  //     deck[i * 13 + j].x = 205 * j + 5;
-  //     deck[i * 13 + j].y = i * 295 + 5;
-  //     deck[i * 13 + j].show();
-  //   }
-  // }
+
 }
 
 function draw() {
   background(0);
-
-
-
 
   for (let card of deck) {
     card.show();
@@ -153,6 +150,7 @@ function ai() {
       }
     }
   }
+
   for (let card of possible) {
     if (card.value === 2) {
       pick += 2;
