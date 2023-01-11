@@ -22,7 +22,7 @@ function preload() {
 function setup() {
   createCanvas(3000, 1500);
   createDeck();
-  shuffleDeck();
+  shuffleDeck(deck);
   dealCards();
 }
 
@@ -39,7 +39,7 @@ function createDeck() {
     });
 }
 
-function shuffleDeck(){
+function shuffleDeck(grid){
     // shuffle the deck using the fisher-yates shuffle algorithm
     let swap1;
     let swap2;
