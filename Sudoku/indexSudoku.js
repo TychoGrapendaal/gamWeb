@@ -128,26 +128,51 @@ function generate() {
   ];
   marked = copy(grid);
   fill(grid);
-  if (solve(grid)) {
-    answer = copy(grid);
-    remove(grid);
-    //remove(grid);
-    //remove(grid);
-    //remove(grid);
-    //remove(grid);
-    //remove(grid);
-    unsolved = copy(grid);
-    begin = copy(grid);
+  if (!solve(grid)) {
+    generate();
+    return;
+  }
 
-    console.log(81 - AmmountEmpty(unsolved));
-    if (81 - AmmountEmpty(unsolved) < 25) {
-      draw(grid);
-    } else {
-      generate();
-    }
+  answer = copy(grid);
+  remove(grid);
+  unsolved = copy(grid);
+  begin = copy(grid);
+
+  console.log(81 - AmmountEmpty(unsolved));
+  if (81 - AmmountEmpty(unsolved) < 25) {
+    draw(grid);
   } else {
     generate();
   }
+}
+
+function solveremove(bo) {
+  let row;
+  let col;
+  let find = find_empty(bo);
+  if (solutions > 1) {
+    return false;
+  }
+  if (find === false) {
+    solutions++;
+    if (solutions > 1) {
+      return false;
+    }
+    return;
+  }
+  row = find[0];
+  col = find[1];
+  for (let i = 1; i < 10; i++) {
+    if (valid(bo, i, [row, col])) {
+      bo[row][col] = i;
+
+      solveremove(bo);
+
+      bo[row][col] = 0;
+    }
+  }
+
+  return (solutions === 1);
 }
 
 function check(bo) {
@@ -167,7 +192,8 @@ function remove(bo) {
     bo[positions[i][0]][positions[i][1]] = 0;
     forhuman = copy(bo);
     tries = 0;
-    if (!humansolve(forhuman)) {
+    solutions = 0;
+    if (!solveremove(forhuman)) {
       bo[positions[i][0]][positions[i][1]] = removed;
     }
   }
@@ -179,9 +205,7 @@ function shuffel(poss) {
   let x;
   for (let i = 0; i < 81; i++) {
     swap1 = poss[i];
-    x = Math.round(Math.random() * (cells - 1));
-    //console.log(y);
-    //console.log(x);
+    x = Math.round(Math.random() * (cells*cells - 1));
     swap2 = poss[x];
     poss[i] = swap2;
     poss[x] = swap1;
@@ -196,13 +220,13 @@ function shuffel(poss) {
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.round(Math.random() * (max - min)) + min;
 }
 
 function fill(bo) {
   for (let i = 0; i < cells; i++) {
     for (let j = 0; j < cells; j++) {
-      if (Math.random() * 100 < 30) {
+      if (Math.random() < 0.3) {
         rand = getRandomInt(1, 9);
         if (valid(bo, rand, [i, j])) {
           bo[i][j] = rand;
