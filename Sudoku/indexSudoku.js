@@ -15,6 +15,7 @@ let mousepos;
 let mousex;
 let mousey;
 let marked;
+let digits = 25;
 
 let positions;
 
@@ -139,7 +140,7 @@ function generate() {
   begin = copy(grid);
 
   console.log(81 - AmmountEmpty(unsolved));
-  if (81 - AmmountEmpty(unsolved) < 25) {
+  if (81 - AmmountEmpty(unsolved) < digits) {
     draw(grid);
   } else {
     generate();
@@ -220,7 +221,7 @@ function shuffel(poss) {
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.round(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * (max)) + min;
 }
 
 function fill(bo) {
