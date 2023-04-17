@@ -3,19 +3,12 @@ let ctx = canvas.getContext("2d");
 
 let grid;
 let answer;
-let possiblepos;
 
-let box_x;
-let box_y;
-let rand;
-let tries = 0;
-let forhuman;
-let removed;
 let mousepos;
-let mousex;
-let mousey;
 let marked;
-let digits = 25;
+
+let maxDigits = 25;
+let minDigits = 20;
 
 let positions;
 
@@ -26,7 +19,11 @@ const cellSize = GAME_WIDTH / cells;
 
 let unsolved;
 let begin;
-generate();
+
+function updateVariable() {
+  minDigits = document.getElementById('min-field').value;
+  maxDigits = document.getElementById('max-field').value;
+}
 
 function generate() {
   positions = [
@@ -140,12 +137,14 @@ function generate() {
   begin = copy(grid);
 
   console.log(81 - AmmountEmpty(unsolved));
-  if (81 - AmmountEmpty(unsolved) < digits) {
+  if (81 - AmmountEmpty(unsolved) <= maxDigits) {
     draw(grid);
   } else {
     generate();
   }
 }
+
+let solutions = 0;
 
 function solveremove(bo) {
   let row;
@@ -187,15 +186,21 @@ function check(bo) {
   return true;
 }
 
+
 function remove(bo) {
+  let noRemoved = 0;
   for (let i = 0; i < 81; i++) {
-    removed = bo[positions[i][0]][positions[i][1]];
+    if (81-noRemoved <= minDigits) {
+      return;
+    }
+    let removed = bo[positions[i][0]][positions[i][1]];
     bo[positions[i][0]][positions[i][1]] = 0;
-    forhuman = copy(bo);
-    tries = 0;
-    solutions = 0;
+    noRemoved++;
+    let forhuman = copy(bo);
+    solutions = 0
     if (!solveremove(forhuman)) {
       bo[positions[i][0]][positions[i][1]] = removed;
+      noRemoved--;
     }
   }
 }
@@ -228,7 +233,7 @@ function fill(bo) {
   for (let i = 0; i < cells; i++) {
     for (let j = 0; j < cells; j++) {
       if (Math.random() < 0.3) {
-        rand = getRandomInt(1, 9);
+        let rand = getRandomInt(1, 9);
         if (valid(bo, rand, [i, j])) {
           bo[i][j] = rand;
         }
@@ -237,7 +242,9 @@ function fill(bo) {
   }
 }
 
-function humansolve(bo) {
+function humansolve(bo, tries) {
+  let box_x;
+  let box_y;
   let list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
   let pos = [0, 0];
   let number;
@@ -248,7 +255,7 @@ function humansolve(bo) {
   let kpos;
   let kpos2;
 
-  possiblepos = [
+  let possiblepos = [
     [],
 
     [
@@ -483,7 +490,7 @@ function humansolve(bo) {
     return true;
   } else if (tries < 500) {
     tries++;
-    return humansolve(bo);
+    return humansolve(bo, tries);
   } else {
     return false;
   }
@@ -509,6 +516,9 @@ function copy(bo) {
 
   return newBoard;
 }
+
+
+
 
 function solve(bo) {
   let row;
@@ -681,8 +691,8 @@ function AmmountEmpty(bo) {
 }
 
 document.addEventListener("mousemove", (event) => {
-  mousex = event.clientX - 8;
-  mousey = event.clientY - 8;
+  let mousex = event.clientX - 8;
+  let mousey = event.clientY - 8;
   mousepos = [mousex, mousey];
 });
 

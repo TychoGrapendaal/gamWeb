@@ -8,5 +8,15 @@
 <body>
 	<canvas id="gameScreen" width="500" height="500"></canvas>
 	<script src = "indexSudoku.js"></script>
+	<br>
+	<label for="input-field">Enter min digits:</label>
+	<br>
+  <input type="text" id="min-field" oninput="updateVariable()">
+	<br>
+	<label for="input-field">Enter max digits:</label>
+	<br>
+  <input type="text" id="max-field" oninput="updateVariable()">
+	<br>
+	<button onclick="generate()">Generate Sudoku!</button>
 </body>
 </html>
