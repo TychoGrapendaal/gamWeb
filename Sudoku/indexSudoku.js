@@ -9,6 +9,8 @@ let marked;
 
 let maxDigits = 25;
 let minDigits = 20;
+document.getElementById('min-field').value = minDigits;
+document.getElementById('max-field').value = maxDigits;
 
 let positions;
 
@@ -136,8 +138,9 @@ function generate() {
   unsolved = copy(grid);
   begin = copy(grid);
 
-  console.log(81 - AmmountEmpty(unsolved));
-  if (81 - AmmountEmpty(unsolved) <= maxDigits) {
+  let digits = 81 - AmmountEmpty(unsolved);
+  console.log(digits);
+  if (digits <= maxDigits) {
     draw(grid);
   } else {
     generate();
