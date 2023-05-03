@@ -70,9 +70,15 @@ function setup() {
 
 function checkForWinner() {
   if (redPieces.length < 3) {
-    console.log("white wins");
+    fill(0);
+    textSize(32);
+    text('white wins', 10, 30);
+    noLoop();
   } else if (whitePieces.length < 3) {
-    console.log("red wins");
+    fill(0);
+    textSize(32);
+    text('red wins', 10, 30);
+    noLoop();
   }
 
   //check for legal moves
@@ -89,7 +95,12 @@ function checkForWinner() {
         break;
       }
     }
-    if (whiteMoves.length < 1) console.log("red wins by no moves");
+    if (whiteMoves.length < 1) {
+      fill(0);
+      textSize(32);
+      text('red wins by no moves', 10, 30);
+      noLoop();
+    }
   } else {
     for (let i = 0; i < redPieces.length; i++) {
       let temp = redPieces[i].moves(redPieces[i].realMove);
@@ -98,7 +109,12 @@ function checkForWinner() {
         break;
       }
     }
-    if (redMoves.length < 1) console.log("white wins by no moves");
+    if (redMoves.length < 1) {
+      fill(0);
+      textSize(32);
+      text('white wins by no moves', 10, 30);
+      noLoop();
+    }
   }
 }
 
