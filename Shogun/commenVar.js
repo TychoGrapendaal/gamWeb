@@ -15,6 +15,9 @@ let gridPiecesCopy = new Array(cells);
 let whitePiecesCopy = [];
 let redPiecesCopy = [];
 
+let winner = false;
+let winnerText = "";
+
 
 function findOne (pos, arr) {
   for (let i = 0; i < arr.length; i++) {

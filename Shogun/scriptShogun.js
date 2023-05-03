@@ -70,15 +70,11 @@ function setup() {
 
 function checkForWinner() {
   if (redPieces.length < 3) {
-    fill(0);
-    textSize(32);
-    text('white wins', 10, 30);
-    noLoop();
+    winnerText = 'white wins';
+    winner = true;
   } else if (whitePieces.length < 3) {
-    fill(0);
-    textSize(32);
-    text('red wins', 10, 30);
-    noLoop();
+    winnerText = 'red wins';
+    winner = true;
   }
 
   //check for legal moves
@@ -96,10 +92,8 @@ function checkForWinner() {
       }
     }
     if (whiteMoves.length < 1) {
-      fill(0);
-      textSize(32);
-      text('red wins by no moves', 10, 30);
-      noLoop();
+      winnerText = 'red wins by no moves';
+      winner = true;
     }
   } else {
     for (let i = 0; i < redPieces.length; i++) {
@@ -110,10 +104,8 @@ function checkForWinner() {
       }
     }
     if (redMoves.length < 1) {
-      fill(0);
-      textSize(32);
-      text('white wins by no moves', 10, 30);
-      noLoop();
+      winnerText = 'white wins by no moves';
+      winner = true;
     }
   }
 }
@@ -122,6 +114,11 @@ function draw() {
   background(150);
   drawBoard();
   drawPieces();
+  if (winner) {
+    fill(0);
+    textSize(32);
+    text(winnerText, 10, 30);
+  }
 }
 
 function drawBoard() {
@@ -146,11 +143,14 @@ function drawPieces() {
 
 
 function mousePressed() {
+  if (winner) return;
+
   let my = Math.floor(mouseY / cellSize);
   let mx = Math.floor(mouseX / cellSize);
 
 
 
+// if clicking on green
   if (gridPieces[my][mx] === -1 || gridPieces[my][mx].team !== turn) {
     for (let i = 0; i < whitePieces.length; i++) {
       if (whitePieces[i].moving && findOne([mx, my], whitePieces[i].moves(whitePieces[i].realMove))) {
@@ -171,7 +171,7 @@ function mousePressed() {
     return;
   }
 
-  gridPieces[my][mx].moves(gridPieces[my][mx].realMove);
+  //draw posssible moves for the piece
   for (let i = 0; i < whitePieces.length; i++) {
     whitePieces[i].moving = false;
   }
