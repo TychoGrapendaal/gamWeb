@@ -4,7 +4,6 @@ class Piece {
     this.width = width;
     this.px = px;
     this.py = py;
-    this.cellSize = cellSize;
     this.team = team;
     this.image = loadImage(image);
     this.move = move;
@@ -72,12 +71,14 @@ class Piece {
           py++;
         }
 
-        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells || gridPieces[py][pxLeft] !== -1) left = false;
-        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells || gridPieces[py][pxRight] !== -1) right = false;
+        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells) left = false;
+        else if (gridPieces[py][pxLeft] !== -1) left = false;
+        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells) right = false;
+        else if (gridPieces[py][pxRight] !== -1) right = false;
 
-        if (i == (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py+1]);
-        if (i == (steps-2) && left) moves.push([pxLeft-1, py]);
-        if (i == (steps-2) && right) moves.push([pxRight+1, py]);
+        if (i === (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py+1]);
+        if (i === (steps-2) && left) moves.push([pxLeft-1, py]);
+        if (i === (steps-2) && right) moves.push([pxRight+1, py]);
       }
     }
 
@@ -95,12 +96,14 @@ class Piece {
           py--;
         }
 
-        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells || gridPieces[py][pxLeft] !== -1) left = false;
-        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells || gridPieces[py][pxRight] !== -1) right = false;
+        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells) left = false;
+        else if (gridPieces[py][pxLeft] !== -1) left = false;
+        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells) right = false;
+        else if (gridPieces[py][pxRight] !== -1) right = false;
 
-        if (i == (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py-1]);
-        if (i == (steps-2) && left) moves.push([pxLeft-1, py]);
-        if (i == (steps-2) && right) moves.push([pxRight+1, py]);
+        if (i === (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py-1]);
+        if (i === (steps-2) && left) moves.push([pxLeft-1, py]);
+        if (i === (steps-2) && right) moves.push([pxRight+1, py]);
       }
     }
 
@@ -119,12 +122,14 @@ class Piece {
           px--;
         }
 
-        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells || gridPieces[pyUp][px] !== -1) up = false;
-        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells || gridPieces[pyDown][px] !== -1) down = false;
+        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells) up = false;
+        else if (gridPieces[pyUp][px] !== -1) up = false;
+        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells) down = false;
+        else if (gridPieces[pyDown][px] !== -1) down = false;
 
-        if (i == (steps-2) && up && down && pyUp === pyDown) moves.push([px-1, pyUp]);
-        if (i == (steps-2) && up) moves.push([px, pyUp-1]);
-        if (i == (steps-2) && down) moves.push([px, pyDown+1]);
+        if (i === (steps-2) && up && down && pyUp === pyDown) moves.push([px-1, pyUp]);
+        if (i === (steps-2) && up) moves.push([px, pyUp-1]);
+        if (i === (steps-2) && down) moves.push([px, pyDown+1]);
       }
     }
 
@@ -142,16 +147,16 @@ class Piece {
           px++;
         }
 
-        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells || gridPieces[pyUp][px] !== -1) up = false;
-        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells || gridPieces[pyDown][px] !== -1) down = false;
+        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells) up = false;
+        else if (gridPieces[pyUp][px] !== -1) up = false;
+        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells) down = false;
+        else if (gridPieces[pyDown][px] !== -1) down = false;
 
-        if (i == (steps-2) && up && down && pyUp === pyDown) moves.push([px+1, pyUp]);
-        if (i == (steps-2) && up) moves.push([px, pyUp-1]);
-        if (i == (steps-2) && down) moves.push([px, pyDown+1]);
+        if (i === (steps-2) && up && down && pyUp === pyDown) moves.push([px+1, pyUp]);
+        if (i === (steps-2) && up) moves.push([px, pyUp-1]);
+        if (i === (steps-2) && down) moves.push([px, pyDown+1]);
       }
     }
-
-
 
 
     if (steps === 1) {
@@ -164,13 +169,6 @@ class Piece {
     for (let i = moves.length-1; i >= 0; i--) {
       let m = moves[i];
       if (m[0] < 0 || m[0] >= cells || m[1] < 0 || m[1] >= cells) {
-        moves.splice(i, 1);
-      }
-    }
-
-    for (let i = moves.length-1; i >= 0; i--) {
-      let m = moves[i];
-      if (gridPieces[m[1]][m[0]] !== -1 && gridPieces[m[1]][m[0]].team === this.team) {
         moves.splice(i, 1);
       }
     }
@@ -216,12 +214,14 @@ class Piece {
           py++;
         }
 
-        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells || gridPiecesCopy[py][pxLeft] !== -1) left = false;
-        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells || gridPiecesCopy[py][pxRight] !== -1) right = false;
+        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells) left = false;
+        else if (gridPiecesCopy[py][pxLeft] !== -1) left = false;
+        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells) right = false;
+        else if (gridPiecesCopy[py][pxRight] !== -1) right = false;
 
-        if (i == (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py+1]);
-        if (i == (steps-2) && left) moves.push([pxLeft-1, py]);
-        if (i == (steps-2) && right) moves.push([pxRight+1, py]);
+        if (i === (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py+1]);
+        if (i === (steps-2) && left) moves.push([pxLeft-1, py]);
+        if (i === (steps-2) && right) moves.push([pxRight+1, py]);
       }
     }
 
@@ -239,12 +239,14 @@ class Piece {
           py--;
         }
 
-        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells || gridPiecesCopy[py][pxLeft] !== -1) left = false;
-        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells || gridPiecesCopy[py][pxRight] !== -1) right = false;
+        if (py < 0 || py >= cells || pxLeft < 0 || pxLeft >= cells) left = false;
+        else if (gridPiecesCopy[py][pxLeft] !== -1) left = false;
+        if (py < 0 || py >= cells || pxRight < 0 || pxRight >= cells) right = false;
+        else if (gridPiecesCopy[py][pxRight] !== -1) right = false;
 
-        if (i == (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py-1]);
-        if (i == (steps-2) && left) moves.push([pxLeft-1, py]);
-        if (i == (steps-2) && right) moves.push([pxRight+1, py]);
+        if (i === (steps-2) && left && right && pxLeft === pxRight) moves.push([pxLeft, py-1]);
+        if (i === (steps-2) && left) moves.push([pxLeft-1, py]);
+        if (i === (steps-2) && right) moves.push([pxRight+1, py]);
       }
     }
 
@@ -263,12 +265,14 @@ class Piece {
           px--;
         }
 
-        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells || gridPiecesCopy[pyUp][px] !== -1) up = false;
-        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells || gridPiecesCopy[pyDown][px] !== -1) down = false;
+        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells) up = false;
+        else if (gridPiecesCopy[pyUp][px] !== -1) up = false;
+        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells) down = false;
+        else if (gridPiecesCopy[pyDown][px] !== -1) down = false;
 
-        if (i == (steps-2) && up && down && pyUp === pyDown) moves.push([px-1, pyUp]);
-        if (i == (steps-2) && up) moves.push([px, pyUp-1]);
-        if (i == (steps-2) && down) moves.push([px, pyDown+1]);
+        if (i === (steps-2) && up && down && pyUp === pyDown) moves.push([px-1, pyUp]);
+        if (i === (steps-2) && up) moves.push([px, pyUp-1]);
+        if (i === (steps-2) && down) moves.push([px, pyDown+1]);
       }
     }
 
@@ -286,17 +290,16 @@ class Piece {
           px++;
         }
 
-        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells || gridPiecesCopy[pyUp][px] !== -1) up = false;
-        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells || gridPiecesCopy[pyDown][px] !== -1) down = false;
+        if (px < 0 || px >= cells || pyUp < 0 || pyUp >= cells) up = false;
+        else if (gridPiecesCopy[pyUp][px] !== -1) up = false;
+        if (px < 0 || px >= cells || pyDown < 0 || pyDown >= cells) down = false;
+        else if (gridPiecesCopy[pyDown][px] !== -1) down = false;
 
-        if (i == (steps-2) && up && down && pyUp === pyDown) moves.push([px+1, pyUp]);
-        if (i == (steps-2) && up) moves.push([px, pyUp-1]);
-        if (i == (steps-2) && down) moves.push([px, pyDown+1]);
+        if (i === (steps-2) && up && down && pyUp === pyDown) moves.push([px+1, pyUp]);
+        if (i === (steps-2) && up) moves.push([px, pyUp-1]);
+        if (i === (steps-2) && down) moves.push([px, pyDown+1]);
       }
     }
-
-
-
 
     if (steps === 1) {
       moves.push([this.px + 1, this.py + (steps-1)]);
@@ -308,13 +311,6 @@ class Piece {
     for (let i = moves.length-1; i >= 0; i--) {
       let m = moves[i];
       if (m[0] < 0 || m[0] >= cells || m[1] < 0 || m[1] >= cells) {
-        moves.splice(i, 1);
-      }
-    }
-
-    for (let i = moves.length-1; i >= 0; i--) {
-      let m = moves[i];
-      if (gridPiecesCopy[m[1]][m[0]] !== -1 && gridPiecesCopy[m[1]][m[0]].team === this.team) {
         moves.splice(i, 1);
       }
     }
@@ -355,7 +351,7 @@ class Piece {
       let m = moves[i];
       this.moveToCopy(m[0], m[1]);
 
-      //check if problemx
+      //check if problem
       if (this.team === "w") {
         for (let j = 0; j < redPiecesCopy.length; j++) {
           let piece = redPiecesCopy[j];

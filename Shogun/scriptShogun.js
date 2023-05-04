@@ -24,7 +24,7 @@ function setup() {
     if (everyMoveIsRandom) {
 
     } else {
-      if (i == 4) {
+      if (i === 4) {
         let m = Math.floor(Math.random()*2);
         let mm = (grid[i][7] + m) % 2 + 1;
         whitePieces.push(new Piece(40, 57, i, 7, cellSize, "images/piece" + mm + "ws.png", "w", m, true));
@@ -42,7 +42,7 @@ function setup() {
     if (everyMoveIsRandom) {
 
     } else {
-      if (i == 3) {
+      if (i === 3) {
         let m = Math.floor(Math.random()*2);
         let mm = (grid[i][0] + m) % 2 + 1;
         redPieces.push(new Piece(40, 57, i, 0, cellSize, "images/piece" + mm + "rs.png", "r", m, true));
@@ -87,7 +87,7 @@ function checkForWinner() {
     for (let i = 0; i < whitePieces.length; i++) {
       let temp = whitePieces[i].moves(whitePieces[i].realMove);
       for (let j = 0; j < temp.length; j++) {
-        whiteMoves.push(temp[i]);
+        whiteMoves.push(temp[j]);
         break;
       }
     }
@@ -99,7 +99,7 @@ function checkForWinner() {
     for (let i = 0; i < redPieces.length; i++) {
       let temp = redPieces[i].moves(redPieces[i].realMove);
       for (let j = 0; j < temp.length; j++) {
-        redMoves.push(temp[i]);
+        redMoves.push(temp[j]);
         break;
       }
     }
@@ -125,7 +125,7 @@ function drawBoard() {
   for (let i = 0; i < cells; i++) {
     for (let j = 0; j < cells; j++) {
       fill(238,238,210);
-      if ((i + j) % 2 == 0) fill(118,150,86);
+      if ((i + j) % 2 === 0) fill(118,150,86);
       rect(i * cellSize, j * cellSize, cellSize, cellSize);
     }
   }
@@ -171,7 +171,7 @@ function mousePressed() {
     return;
   }
 
-  //draw posssible moves for the piece
+  //draw possible moves for the piece
   for (let i = 0; i < whitePieces.length; i++) {
     whitePieces[i].moving = false;
   }

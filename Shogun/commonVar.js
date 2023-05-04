@@ -7,8 +7,6 @@ let turn = "w";
 
 let whitePieces = [];
 let redPieces = [];
-let whiteS;
-let redS;
 
 
 let gridPiecesCopy = new Array(cells);
@@ -24,7 +22,7 @@ function findOne (pos, arr) {
     if (arr[i][0] === pos[0] && arr[i][1] === pos[1]) return true;
   }
   return false;
-};
+}
 
 
 function copyArr(arr) {
